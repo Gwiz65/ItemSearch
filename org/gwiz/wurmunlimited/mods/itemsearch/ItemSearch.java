@@ -218,7 +218,7 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 					ctWurmTreeList));
 			ctWurmTreeList.addMethod(CtNewMethod
 					.make("public void handleInputChanged(com.wurmonline.client.renderer.gui.WurmInputField field, "
-							+ "String input) { this.recalcLines(); }", ctWurmTreeList));
+					+ "String input) { this.recalcLines(); }", ctWurmTreeList));
 			ctWurmTreeList.addMethod(CtNewMethod.make(
 					"public void handleEscape(com.wurmonline.client.renderer.gui.WurmInputField field) { }",
 					ctWurmTreeList));
