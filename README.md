@@ -5,7 +5,7 @@ A Wurm Unlimited Client Mod that adds a text search filter to inventory and cont
 
 - needs Ago's Client ModLauncher installed.
 - extract itemsearch-x.x.zip into WurmLauncher directory.
-- 
+
 - Adds search filter to the following window types that can be toggled on/off with the itemsearch.properties file:
   - Main Inventory Window
   - Containers opened from Main Inventory
