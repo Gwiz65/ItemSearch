@@ -52,7 +52,7 @@ import javassist.expr.MethodCall;
 
 public class ItemSearch implements WurmClientMod, Initable, Versioned, Configurable {
 
-	private static final String version = "0.44";
+	private static final String version = "1.0";
 	private boolean addtoInventoryWindow = true;
 	private boolean addtoInventoryContainerWindows = true;
 	private boolean addtoItemListWindows = true;
@@ -189,8 +189,8 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 					if (methodCall.getMethodName().equals("setComponent")) {
 						methodCall.replace("{ if ($0.equals(this)) { StackTraceElement[] stes = Thread.currentThread()."
 								+ "getStackTrace(); for (int i = 2; i < stes.length; i++) if (stes[i]."
-								+ "getClassName().contains(\"Window\")) { String callingClassName = stes[i].getClassName();"
-								+ insertString + "this.hasSearch = true; this.searchField = new com.wurmonline.client."
+								+ "getClassName().contains(\"Window\")) { String callingClassName = stes[i].getClassName(); "
+				 				+ insertString + " this.hasSearch = true; this.searchField = new com.wurmonline.client."
 								+ "renderer.gui.WurmInputField(\"Search\", this); final com.wurmonline.client."
 								+ "renderer.gui.WurmArrayPanel searchArray = new com.wurmonline.client.renderer."
 								+ "gui.WurmArrayPanel(1); this.searchButton = new com.wurmonline.client.renderer."
