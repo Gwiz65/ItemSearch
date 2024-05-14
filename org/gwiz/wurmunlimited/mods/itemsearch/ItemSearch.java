@@ -190,7 +190,7 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 						methodCall.replace("{ if ($0.equals(this)) { StackTraceElement[] stes = Thread.currentThread()."
 								+ "getStackTrace(); for (int i = 2; i < stes.length; i++) if (stes[i]."
 								+ "getClassName().contains(\"Window\")) { String callingClassName = stes[i].getClassName(); "
-				 				+ insertString + " this.hasSearch = true; this.searchField = new com.wurmonline.client."
+								+ insertString + " this.hasSearch = true; this.searchField = new com.wurmonline.client."
 								+ "renderer.gui.WurmInputField(\"Search\", this); final com.wurmonline.client."
 								+ "renderer.gui.WurmArrayPanel searchArray = new com.wurmonline.client.renderer."
 								+ "gui.WurmArrayPanel(1); this.searchButton = new com.wurmonline.client.renderer."
