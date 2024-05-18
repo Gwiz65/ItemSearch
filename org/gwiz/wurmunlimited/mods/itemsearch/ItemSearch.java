@@ -52,7 +52,7 @@ import javassist.expr.MethodCall;
 
 public class ItemSearch implements WurmClientMod, Initable, Versioned, Configurable {
 
-	private static final String version = "1.0";
+	private static final String version = "1.1";
 	private boolean addtoInventoryWindow = true;
 	private boolean addtoInventoryContainerWindows = true;
 	private boolean addtoItemListWindows = true;
@@ -97,12 +97,14 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 			CtClass ctWurmTreeList = hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.WurmTreeList");
 
 			// add input field listener interface
-			ctWurmTreeList.addInterface(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.InputFieldListener"));
+			ctWurmTreeList
+					.addInterface(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.InputFieldListener"));
 
 			// add some fields
 			ctWurmTreeList.addField(new CtField(CtPrimitiveType.booleanType, "hasSearch", ctWurmTreeList), "false");
 			ctWurmTreeList.addField(new CtField(CtPrimitiveType.booleanType, "matchFound", ctWurmTreeList), "false");
-			ctWurmTreeList.addField(new CtField(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.WurmInputField"),
+			ctWurmTreeList
+					.addField(new CtField(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.WurmInputField"),
 							"searchField", ctWurmTreeList));
 			ctWurmTreeList.addField(new CtField(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.WButton"),
 					"searchButton", ctWurmTreeList));
@@ -187,22 +189,22 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 			ctWurmTreeListConstructor.instrument(new ExprEditor() {
 				public void edit(MethodCall methodCall) throws CannotCompileException {
 					if (methodCall.getMethodName().equals("setComponent")) {
-						methodCall.replace("{ if ($0.equals(this)) { StackTraceElement[] stes = Thread.currentThread()."
-								+ "getStackTrace(); for (int i = 2; i < stes.length; i++) if (stes[i]."
-								+ "getClassName().contains(\"Window\")) { String callingClassName = stes[i].getClassName(); "
-								+ insertString + " this.hasSearch = true; this.searchField = new com.wurmonline.client."
-								+ "renderer.gui.WurmInputField(\"Search\", this); final com.wurmonline.client."
-								+ "renderer.gui.WurmArrayPanel searchArray = new com.wurmonline.client.renderer."
-								+ "gui.WurmArrayPanel(1); this.searchButton = new com.wurmonline.client.renderer."
-								+ "gui.WButton(\"Search\", this); this.clearButton = new com.wurmonline.client."
-								+ "renderer.gui.WButton(\"Clear\", this); searchArray.addComponent(this.searchField);"
-								+ " searchArray.addComponent(this.searchButton); searchArray.addComponent("
-								+ "this.clearButton); final com.wurmonline.client.renderer.gui.WurmBorderPanel "
-								+ "mainPanel = new com.wurmonline.client.renderer.gui.WurmBorderPanel(); "
-								+ "mainPanel.setComponent($1, 4); mainPanel.setComponent(searchArray, 2); "
-								+ "this.setComponent(mainPanel, 4); this.searchField.setInitialSize(150, "
-								+ "this.searchButton.height, false); } else $_ = $proceed($$); break; } } "
-								+ "else $_ = $proceed($$); }");
+						methodCall.replace("{ if ($0.equals(this)) { StackTraceElement[] stes = Thread."
+								+ "currentThread().getStackTrace(); for (int i = 2; i < stes.length; i++) "
+								+ "if (stes[i].getClassName().contains(\"Window\") || stes[i].getClassName()."
+								+ "contains(\"Tab\")) { String callingClassName = stes[i].getClassName(); "
+								+ insertString + " this.hasSearch = true; this.searchField = new com.wurmonline"
+								+ ".client.renderer.gui.WurmInputField(\"Search\", this); final com.wurmonline."
+								+ "client.renderer.gui.WurmArrayPanel searchArray = new com.wurmonline.client."
+								+ "renderer.gui.WurmArrayPanel(1); this.searchButton = new com.wurmonline.client."
+								+ "renderer.gui.WButton(\"Search\", this); this.clearButton = new com.wurmonline."
+								+ "client.renderer.gui.WButton(\"Clear\", this); searchArray.addComponent(this."
+								+ "searchField); searchArray.addComponent(this.searchButton); searchArray.addComponent"
+								+ "(this.clearButton); final com.wurmonline.client.renderer.gui.WurmBorderPanel mainPanel "
+								+ "= new com.wurmonline.client.renderer.gui.WurmBorderPanel(); mainPanel.setComponent"
+								+ "($1, 4); mainPanel.setComponent(searchArray, 2); this.setComponent(mainPanel, 4); "
+								+ "this.searchField.setInitialSize(150, this.searchButton.height, false); } else $_ = "
+								+ "$proceed($$); break; } } else $_ = $proceed($$); }");
 					}
 				}
 			});
@@ -218,7 +220,7 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 					ctWurmTreeList));
 			ctWurmTreeList.addMethod(CtNewMethod
 					.make("public void handleInputChanged(com.wurmonline.client.renderer.gui.WurmInputField field, "
-					+ "String input) { this.recalcLines(); }", ctWurmTreeList));
+							+ "String input) { this.recalcLines(); }", ctWurmTreeList));
 			ctWurmTreeList.addMethod(CtNewMethod.make(
 					"public void handleEscape(com.wurmonline.client.renderer.gui.WurmInputField field) { }",
 					ctWurmTreeList));
