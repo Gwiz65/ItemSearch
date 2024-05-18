@@ -213,15 +213,12 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 					+ "this.clearButton.width, this.searchButton.height); }", ctWurmTreeList));
 
 			// create override methods for InputFieldListener interface
-			ctWurmTreeList.addMethod(CtNewMethod.make(
-					"public void handleInput(String input) { this.searchField.setTextMoveToEnd(input); }",
-					ctWurmTreeList));
-			ctWurmTreeList.addMethod(CtNewMethod
-					.make("public void handleInputChanged(com.wurmonline.client.renderer.gui.WurmInputField field, "
-							+ "String input) { this.recalcLines(); }", ctWurmTreeList));
-			ctWurmTreeList.addMethod(CtNewMethod.make(
-					"public void handleEscape(com.wurmonline.client.renderer.gui.WurmInputField field) { }",
-					ctWurmTreeList));
+			ctWurmTreeList.addMethod(CtNewMethod.make("public void handleInput(String input) { this.searchField."
+					+ "setTextMoveToEnd(input); }", ctWurmTreeList));
+			ctWurmTreeList.addMethod(CtNewMethod.make("public void handleInputChanged(com.wurmonline.client."
+					+ "renderer.gui.WurmInputField field, String input) { this.recalcLines(); }", ctWurmTreeList));
+			ctWurmTreeList.addMethod(CtNewMethod.make("public void handleEscape(com.wurmonline.client.renderer"
+					* ".gui.WurmInputField field) { }", ctWurmTreeList));
 
 			// handle our buttons
 			ctWurmTreeList.getDeclaredMethod("buttonClicked").insertAfter("if (this.hasSearch) { if (button.equals"
