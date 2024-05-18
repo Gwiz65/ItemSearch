@@ -97,14 +97,12 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 			CtClass ctWurmTreeList = hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.WurmTreeList");
 
 			// add input field listener interface
-			ctWurmTreeList
-					.addInterface(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.InputFieldListener"));
+			ctWurmTreeList.addInterface(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.InputFieldListener"));
 
 			// add some fields
 			ctWurmTreeList.addField(new CtField(CtPrimitiveType.booleanType, "hasSearch", ctWurmTreeList), "false");
 			ctWurmTreeList.addField(new CtField(CtPrimitiveType.booleanType, "matchFound", ctWurmTreeList), "false");
-			ctWurmTreeList
-					.addField(new CtField(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.WurmInputField"),
+			ctWurmTreeList.addField(new CtField(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.WurmInputField"),
 							"searchField", ctWurmTreeList));
 			ctWurmTreeList.addField(new CtField(hookClassPool.getCtClass("com.wurmonline.client.renderer.gui.WButton"),
 					"searchButton", ctWurmTreeList));
