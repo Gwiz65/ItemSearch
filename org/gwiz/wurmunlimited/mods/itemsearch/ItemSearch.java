@@ -52,7 +52,7 @@ import javassist.expr.MethodCall;
 
 public class ItemSearch implements WurmClientMod, Initable, Versioned, Configurable {
 
-	private static final String version = "1.1";
+	private static final String version = "1.1.1";
 	private boolean addtoInventoryWindow = true;
 	private boolean addtoInventoryContainerWindows = true;
 	private boolean addtoItemListWindows = true;
@@ -63,6 +63,7 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 	private boolean addtoStatisticsWindow = true;
 	private boolean addtoDebugWindow = true;
 	private boolean addtoJournalWindow = true;
+	private boolean addtoSupportTab = false;
 
 	@Override
 	public void configure(Properties properties) {
@@ -86,6 +87,8 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 				.parseBoolean(properties.getProperty("addtoDebugWindow", Boolean.toString(addtoDebugWindow)));
 		addtoJournalWindow = Boolean
 				.parseBoolean(properties.getProperty("addtoJournalWindow", Boolean.toString(addtoJournalWindow)));
+		addtoSupportTab = Boolean
+				.parseBoolean(properties.getProperty("addtoSupportTab", Boolean.toString(addtoSupportTab)));
 	}
 
 	@Override
@@ -170,6 +173,12 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 				if (hasOne)
 					ifStatement.append(" || ");
 				ifStatement.append("callingClassName.contains(\"JournalWindow\")");
+				hasOne = true;
+			}
+			if (addtoSupportTab) {
+				if (hasOne)
+					ifStatement.append(" || ");
+				ifStatement.append("callingClassName.contains(\"SupportTab\")");
 			}
 			// not sure why anyone would set search off for all windows, but just in case
 			if (ifStatement.toString().equals("if ("))
@@ -189,20 +198,21 @@ public class ItemSearch implements WurmClientMod, Initable, Versioned, Configura
 			ctWurmTreeListConstructor.instrument(new ExprEditor() {
 				public void edit(MethodCall methodCall) throws CannotCompileException {
 					if (methodCall.getMethodName().equals("setComponent")) {
-						methodCall.replace("{ if ($0.equals(this)) { StackTraceElement[] stes = Thread.currentThread()."
-								+ "getStackTrace(); for (int i = 2; i < stes.length; i++) { if (stes[i].getClassName()."
-								+ "contains(\"Window\")) { String callingClassName = stes[i].getClassName(); "
-								+ insertString + " this.hasSearch = true; this.searchField = new com.wurmonline."
-								+ "client.renderer.gui.WurmInputField(\"Search\", this); final com.wurmonline."
-								+ "client.renderer.gui.WurmArrayPanel searchArray = new com.wurmonline.client."
-								+ "renderer.gui.WurmArrayPanel(1); this.searchButton = new com.wurmonline.client."
-								+ "renderer.gui.WButton(\"Search\", this); this.clearButton = new com.wurmonline."
-								+ "client.renderer.gui.WButton(\"Clear\", this); searchArray.addComponent(this."
-								+ "searchField); searchArray.addComponent(this.searchButton); searchArray."
-								+ "addComponent(this.clearButton); final com.wurmonline.client.renderer.gui."
-								+ "WurmBorderPanel mainPanel = new com.wurmonline.client.renderer.gui."
-								+ "WurmBorderPanel(); mainPanel.setComponent($1, 4); mainPanel.setComponent"
-								+ "(searchArray, 2); this.setComponent(mainPanel, 4); this.searchField."
+						methodCall.replace("{ if ($0.equals(this)) { StackTraceElement[] stes = Thread."
+								+ "currentThread().getStackTrace(); for (int i = 2; i < stes.length; i++) { if "
+								+ "(stes[i].getClassName().contains(\"Window\") || stes[i].getClassName()."
+								+ "contains(\"Tab\")) { String callingClassName = stes[i].getClassName(); "
+								+ insertString + " this.hasSearch = true; this.searchField = new com."
+								+ "wurmonline.client.renderer.gui.WurmInputField(\"Search\", this); final "
+								+ "com.wurmonline.client.renderer.gui.WurmArrayPanel searchArray = new com."
+								+ "wurmonline.client.renderer.gui.WurmArrayPanel(1); this.searchButton = "
+								+ "new com.wurmonline.client.renderer.gui.WButton(\"Search\", this); this."
+								+ "clearButton = new com.wurmonline.client.renderer.gui.WButton(\"Clear\", this); "
+								+ "searchArray.addComponent(this.searchField); searchArray.addComponent(this."
+								+ "searchButton); searchArray.addComponent(this.clearButton); final com.wurmonline."
+								+ "client.renderer.gui.WurmBorderPanel mainPanel = new com.wurmonline.client."
+								+ "renderer.gui.WurmBorderPanel(); mainPanel.setComponent($1, 4); mainPanel."
+								+ "setComponent(searchArray, 2); this.setComponent(mainPanel, 4); this.searchField."
 								+ "setInitialSize(150, this.searchButton.height, false); } else $_ = $proceed($$); "
 								+ "break; } if (i == stes.length - 1) $_ = $proceed($$); } } else $_ = $proceed($$); }");
 					}
