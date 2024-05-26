@@ -15,3 +15,4 @@ A Wurm Unlimited Client Mod that adds a text search filter to inventory and cont
 
 - **Release Notes:**
   - Release 1.0 - Initial release.
+  - Release 1.1 - Fixed Friends & Support Tabs bug
